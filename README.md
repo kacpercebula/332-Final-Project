@@ -26,6 +26,17 @@ HDMD$long <- as.numeric(gsub("\\(", "", gsub("\\)", "", HDMD$long)))
 HDMD$lat <- round(HDMD$lat, 2)
 HDMD$long <- round(HDMD$long, 2)
 ```
+Another Example
+1. Used gsub() to clean columns of parentheses after split into two separate columns
+```
+df$lat <- as.numeric(gsub("\\(", "", gsub("\\)", "", df$lat)))
+df$long <- as.numeric(gsub("\\(", "", gsub("\\)", "", df$long)))
+```
+2. Rounded coordinates to two decimal places
+```
+df$lat <- round(df$lat, 2)
+df$long <- round(df$long, 2)
+```
 
 
 ---
@@ -71,6 +82,31 @@ ggplot(data = df_summary, aes(x = Stratification1, y = Data_Value.x, fill = Stra
         axis.title.x = element_text(margin = margin(t = 10)),
         axis.title.y = element_text(margin = margin(r = 10)))
 ```
+Another Example
+1. Made pivot tables for specific visualizations
+```
+df2 <- df1 %>%
+  select(Stratification1, Data_Value) %>%
+  filter(Stratification1 %in% c("Male", "Female")) %>%
+  group_by(Stratification1, Data_Value)
+
+df3 <- df1 %>%
+  select(Stratification1, Data_Value, lat, long) %>%
+  filter(lat < 39) %>%
+  filter(Stratification1 %in% c("Male", "Female")) %>%
+  group_by(Stratification1, Data_Value)
+
+df4 <- df1 %>%
+  select(Stratification1, Data_Value, lat, long) %>%
+  filter(lat > 39) %>%
+  filter(Stratification1 %in% c("Male", "Female")) %>%
+  group_by(Stratification1, Data_Value)
+```
+2. Calculated mean and standard error for visualization
+```
+mean_values <- aggregate(Data_Value ~ Stratification1, data = df2, FUN = mean)
+se_values <- aggregate(Data_Value ~ Stratification1, data = df2, FUN = function(x) sd(x) / sqrt(length(x)))
+```
 
  Line Charts - 
 1. Made a pivot table for specific visualization, used group_by and summarize as main pivot_table making functions.
@@ -107,6 +143,66 @@ map <- map %>%
                    color = "red",
                    fillOpacity = 0.5,
                    popup = ~paste("Sum_Data Values: ", Sum_Data_Values, "<br>Data Value Unit: ", Data_Value_Unit))
+```
+Another Example
+1. Made a smaller dataset for the northern US
+```
+northern_leaflet <- df1 %>%
+  select(lat, long) %>%
+  filter(lat > 39)
+
+leaflet(northern_leaflet) %>%
+  addTiles() %>%
+  addMarkers(lng = ~long,
+             lat = ~lat,
+             popup = ~n)
+```
+2. Made a smaller dataset for the southern US
+```
+southern_leaflet <- df1 %>%
+  select(lat, long) %>%
+  filter(lat < 39)
+
+leaflet(southern_leaflet) %>%
+  addTiles() %>%
+  addMarkers(lng = ~long,
+             lat = ~lat,
+             popup = ~n)
+```
+Models - 
+1. Created specific datasets for models
+```
+model_data <- df1 %>%
+  group_by(Data_Value) %>%
+  summarize(total_n = sum(n))
+
+model_data <- df %>%
+  group_by(Topic) %>%
+  summarise(n = n())
+```
+2. Scaled count data
+```
+df_scaled <- model_data %>%
+  mutate(count_scaled = scale(n))
+
+cluster_data <- df_scaled$count_scaled
+```
+3. Finding K for K Means Clustering using elbow theory
+```
+#creating vector to find k
+wcss <- vector()
+
+#creating a k plot using elbow theory to find k
+for (i in 1:10) {
+  kmeans_model <- kmeans(cluster_data, centers = i)
+  wcss[i] <- kmeans_model$tot.withinss
+}
+
+plot(1:10, wcss, type = "b", xlab = "Number of Clusters", ylab = "WCSS")
+
+k <- 2
+
+kmeans_model <- kmeans(cluster_data, centers = k)
 ```
  
 ---
