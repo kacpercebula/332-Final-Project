@@ -60,31 +60,10 @@ ggplot(smokingRateStates, aes(x = Response, y = average_percentage, fill = Locat
   theme(axis.text.x = element_text(size = 7, angle = 15)) +
   theme(legend.position = "right")
 ```
-Another Example
-1. Made a pivot table for specific visualization, used group_by and summarize as main pivot_table making functions.
-```r
-mean_values <- aggregate(Data_Value ~ Stratification1, data = df2, FUN = mean)
-se_values <- aggregate(Data_Value ~ Stratification1, data = df2, FUN = function(x) sd(x) / sqrt(length(x)))
 
-df_summary <- merge(mean_values, se_values, by = "Stratification1")
-```
-2. Made a ggplot using the pivot table to visualize the information in an appealing way.
-```r
-ggplot(data = df_summary, aes(x = Stratification1, y = Data_Value.x, fill = Stratification1)) +
-  geom_bar(stat = "identity", position = "dodge") +
-  geom_errorbar(aes(ymin = Data_Value.x - Data_Value.y, ymax = Data_Value.x + Data_Value.y), 
-                position = position_dodge(width = 0.9), width = 0.2) +
-  scale_fill_manual(values = c("pink", "blue")) +
-  labs(x = "Gender", y = "Heart Disease Mortality Rate", 
-       title = "Aggregate Total of Heart Disease Mortality By Gender") +
-  theme_minimal() +
-  theme(plot.title = element_text(hjust = 0.5),
-        axis.title.x = element_text(margin = margin(t = 10)),
-        axis.title.y = element_text(margin = margin(r = 10)))
-```
 Another Example
 1. Made pivot tables for specific visualizations
-```
+```r
 df2 <- df1 %>%
   select(Stratification1, Data_Value) %>%
   filter(Stratification1 %in% c("Male", "Female")) %>%
@@ -103,7 +82,7 @@ df4 <- df1 %>%
   group_by(Stratification1, Data_Value)
 ```
 2. Calculated mean and standard error for visualization
-```
+```r
 mean_values <- aggregate(Data_Value ~ Stratification1, data = df2, FUN = mean)
 se_values <- aggregate(Data_Value ~ Stratification1, data = df2, FUN = function(x) sd(x) / sqrt(length(x)))
 ```
@@ -146,7 +125,7 @@ map <- map %>%
 ```
 Another Example
 1. Made a smaller dataset for the northern US
-```
+```r
 northern_leaflet <- df1 %>%
   select(lat, long) %>%
   filter(lat > 39)
@@ -158,7 +137,7 @@ leaflet(northern_leaflet) %>%
              popup = ~n)
 ```
 2. Made a smaller dataset for the southern US
-```
+```r
 southern_leaflet <- df1 %>%
   select(lat, long) %>%
   filter(lat < 39)
@@ -171,7 +150,7 @@ leaflet(southern_leaflet) %>%
 ```
 Models - 
 1. Created specific datasets for models
-```
+```r
 model_data <- df1 %>%
   group_by(Data_Value) %>%
   summarize(total_n = sum(n))
@@ -181,14 +160,14 @@ model_data <- df %>%
   summarise(n = n())
 ```
 2. Scaled count data
-```
+```r
 df_scaled <- model_data %>%
   mutate(count_scaled = scale(n))
 
 cluster_data <- df_scaled$count_scaled
 ```
 3. Finding K for K Means Clustering using elbow theory
-```
+```r
 #creating vector to find k
 wcss <- vector()
 
