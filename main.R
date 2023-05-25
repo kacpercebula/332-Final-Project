@@ -74,6 +74,7 @@ map <- map %>%
 map
 
 
+
 #Visuals 
 
 ggplot(summarized_df_1, aes(x = LocationDesc, y = Sum_Data_Values)) +
