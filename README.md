@@ -192,3 +192,7 @@ kmeans_model <- kmeans(cluster_data, centers = k)
 ## Shiny App
 - All the visualizations and explanations of the charts can be found on the shiny app link below
 - https://kacpercebula.shinyapps.io/Heart-Disease-Mortality-Analysis/
+
+## Link to Data set
+-https://catalog.data.gov/dataset/heart-disease-mortality-data-among-us-adults-35-by-state-territory-and-county
+
