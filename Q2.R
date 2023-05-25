@@ -7,21 +7,21 @@ rm(list = ls())
 
 
 
-df <- readRDS('HDMD.rds')
+HDMD <- readRDS('HDMD.rds')
 
 #Separate lat long values into two separate columns
-df <- separate(df, Location.1, into = c("lat", "long"), sep = ", ")
+HDMD <- separate(HDMD, Location.1, into = c("lat", "long"), sep = ", ")
 
 #Use gsub to remove () from lat long character and make the values read as a number
-df$lat <- as.numeric(gsub("\\(", "", gsub("\\)", "", df$lat)))
-df$long <- as.numeric(gsub("\\(", "", gsub("\\)", "", df$long)))
+HDMD$lat <- as.numeric(gsub("\\(", "", gsub("\\)", "", HDMD$lat)))
+HDMD$long <- as.numeric(gsub("\\(", "", gsub("\\)", "", HDMD$long)))
 
 #Rounding the lat long values to 2 decimal places
-df$lat <- round(df$lat, 2)
-df$long <- round(df$long, 2)
+HDMD$lat <- round(HDMD$lat, 2)
+HDMD$long <- round(HDMD$long, 2)
 
 #Creating data frame by selecting specific columns
-df1 <- df %>%
+df1 <- HDMD %>%
   select(LocationAbbr, Data_Value, Stratification1, Stratification2, lat, long)
 
 #Removing rows that contain NA values
@@ -137,9 +137,9 @@ summary(model)
 
 
 #K MEANS CLUSTER MODEL
-df <- readRDS("chronicDis.rds")
+chronicDis <- readRDS("chronicDis.rds")
 
-model_data <- df %>%
+model_data <- chronicDis %>%
   group_by(Topic) %>%
   summarise(n = n())
 

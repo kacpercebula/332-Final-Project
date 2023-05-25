@@ -1,7 +1,9 @@
 library(ggplot2)
 library(shiny)
 library(leaflet)
+library(tidyr)
 library(shinydashboard)
+library(dplyr)
 
 
 ui <- dashboardPage(
@@ -37,8 +39,7 @@ ui <- dashboardPage(
                            menuSubItem("Geospatials", tabName = "geo", icon = icon("globe"))
                         ),
                menuItem("Models", tabName = "model",
-                           menuSubItem("GPT v. Ours", tabName = "gpt", icon = icon("gear")),
-                           menuSubItem("Research Paper", tabName = "rp", icon = icon("file-text"))
+                           menuSubItem("Ours v. GPT", tabName = "gpt", icon = icon("gear"))
                         )
                            
                
@@ -191,33 +192,34 @@ ui <- dashboardPage(
       
       tabItem(tabName = "gpt",
               h2("GPT-Model"),
-              verbatimTextOutput("gptModel"),
-              h4("explain"),
-              h2("Our-Model"),
               verbatimTextOutput("ourModel"),
               plotOutput("ourModelPlot"),
-              h4("explain")
+              h4("The article “A K-Means Approach to Clustering Disease Progressions” presents a k-means inspired approach to clustering disease 
+                 progression data. The proposed method represents a cluster as a set of weights corresponding to a set of splines fitted to the 
+                 time series data and uses the “goodness-of-fit” as a way to assign time series to clusters. https://ieeexplore.ieee.org/document/8031156 
+                 Link to article."),
+              h2("Our-Model"),
+              verbatimTextOutput("gptModel"),
+              h4("The linear regression model aims to provide value of the correlation between gender and the likelihood of having Heart Disease.")
       ),
       
       tabItem(tabName = "dis",
               h2("Overall Mortality by Race"),
               plotOutput("racePlot"),
-              p("Above shows the severity in differences across races in the summation of total deaths from Heart Disease. 
+              h4("Above shows the severity in differences across races in the summation of total deaths from Heart Disease. 
                 One can see that Black and White are on the top end of the spectrum, while Asian is on the lower end."),
               h2("Risk Factors with Disease Stratification"),
               plotOutput("disPlot"),
-              p("explain the plot")
+              h4("This visual is an accurate version of the data. The data indicates that the prevalence of risk factors does not significantly differ across different races.")
       ), 
       
       tabItem(tabName = "comp",
               h2("Comparison Amongst Races"),
               plotOutput("compPlot"),
-              p("explain the plots")
+              h4("This visualization shows risk factors by race. It suggests that there are minimal variations among racial groups for each specific risk factor. ")
       )
     
   
-      
-      
     )
   )
 )
