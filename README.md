@@ -90,7 +90,7 @@ mean_values <- aggregate(Data_Value ~ Stratification1, data = df2, FUN = mean)
 se_values <- aggregate(Data_Value ~ Stratification1, data = df2, FUN = function(x) sd(x) / sqrt(length(x)))
 ```
 
- Line Charts - 
+ Line Charts 
 1. Made a pivot table for specific visualization, used group_by and summarize as main pivot_table making functions.
 ```r
 rfpaIncomeEffectTime <- riskFactorsStates %>%
