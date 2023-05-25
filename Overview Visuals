@@ -1,4 +1,3 @@
-
 df=df %>% drop_na()
 df_1 =df_1 %>% drop_na()
 df$Latitude <- gsub("[()]", "", df$Latitude)
@@ -88,3 +87,88 @@ ggplot(bottom_ten, aes(x = LocationDesc, y = Sum_Data_Values)) +
 
 df_filtered <- df %>%
   filter(Stratification2 != "Overall")
+
+# Create ggplot with filtered data
+ggplot(df_filtered, aes(x = Stratification2, y = Data_Value)) +
+  geom_bar(stat = "identity", fill = "blue") +
+  labs(x = "Race", y = "Number oF Mortality Rate using the Data Value", title = "Mortality rate by Race")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+
+# Define the UI
+ui <- fluidPage(
+  titlePanel("2014 Mortality rate by Heart Related Diseases"),
+  leafletOutput("map"),
+  textOutput("explanation1"),
+  plotOutput("chart2"),
+  textOutput("explanation2"),
+  plotOutput("chart3"),
+  textOutput("explanation3"),
+  plotOutput("chart4"),
+  textOutput("explanation4"),
+  plotOutput("chart5"),
+  textOutput("explanation5")
+)
+
+# Define the server
+server <- function(input, output) {
+  
+  # Render the leaflet map
+  output$map <- renderLeaflet({
+    # Create a leaflet map object
+    map <- leaflet() %>%
+      addTiles() %>%
+      setView(lng = -95.7129, lat = 37.0902, zoom = 4)
+    
+    # Add markers to the map
+    map <- map %>%
+      addCircleMarkers(data = summarized_df_1,
+                       lng = ~Longitude,
+                       lat = ~Latitude,
+                       radius = 5,
+                       color = "red",
+                       fillOpacity = 0.5,
+                       popup = ~paste("Sum_Data Values: ", Sum_Data_Values, "<br>Data Value Unit: ", Data_Value_Unit))
+    
+    # Display the map
+    map
+  })
+  
+  # Render the second chart
+  output$chart2 <- renderPlot({
+    ggplot(summarized_df_1, aes(x = LocationDesc, y = Sum_Data_Values)) +
+      geom_bar(stat = "identity", fill = "steelblue") +
+      labs(x = "State", y = "Number Of Death", title = "State By Death") +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+  })
+  
+  # Render the third chart
+  output$chart3 <- renderPlot({
+    ggplot(top_ten, aes(x = LocationDesc, y = Sum_Data_Values)) +
+      geom_bar(stat = "identity", fill = "steelblue") +
+      labs(x = "State", y = "Number Of Death", title = "Top Ten States By Death") +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  })
+  
+  # Render the fourth chart
+  output$chart4 <- renderPlot({
+    ggplot(bottom_ten, aes(x = LocationDesc, y = Sum_Data_Values)) +
+      geom_bar(stat = "identity", fill = "steelblue") +
+      labs(x = "State", y = "Number Of Death", title = "Bottom Ten States By Death") +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  })
+  
+  # Render the fifth chart
+  output$chart5 <- renderPlot({
+    ggplot(df_filtered, aes(x = Stratification2, y = Data_Value)) +
+      geom_bar(stat = "identity", fill = "blue") +
+      labs(x = "Race", y = "Number of Mortality Rate using the Data Value", title = "Mortality rate by Race")+
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  })
+  
+  
+}
+
+# Run the app
+shinyApp(ui, server)
