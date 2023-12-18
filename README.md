@@ -1,5 +1,6 @@
 # Heart Disease Mortality Analysis ❤️
-#By Blen Buticho, Cacper Cebula and Zack Gooding
+# By Blen Buticho, Cacper Cebula and Zack Gooding
+
 Shiny App Link:
 https://kacpercebula.shinyapps.io/Heart-Disease-Mortality-Analysis/
 
