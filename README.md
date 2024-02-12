@@ -4,8 +4,6 @@
 Shiny App Link:
 https://kacpercebula.shinyapps.io/Heart-Disease-Mortality-Analysis/
 
-Youtube Link:
-https://www.youtube.com/watch?v=DEM0ZmK7X5k
 
 ## Introduction
 - This project utilizes a Heart Disease Mortality Rate dataset to conduct a comprehensive analysis, exploring various factors and their correlations with mortality rates. Through interactive visualizations and statistical models, the project highlights the significance of factors such as age, education, gender, income, and geographical location in influencing mortality rates. Minnesota consistently emerges as a state with favorable outcomes, while Mississippi tends to have lower rankings. The project emphasizes the complexity of mortality rates, demonstrating the interplay of multiple factors and the need for a holistic approach in addressing heart disease prevention and intervention strategies.
